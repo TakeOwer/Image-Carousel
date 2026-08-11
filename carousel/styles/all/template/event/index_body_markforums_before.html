@@ -1,0 +1,85 @@
+{% if S_CAROUSEL_ENABLED and S_DISPLAY_CAROUSEL %}
+{% INCLUDECSS '@salvocortesiano_carousel/carousel.css' %}
+{% INCLUDEJS '@salvocortesiano_carousel/js/carousel.js' %}
+
+{% for carousel in loops.carousels %}
+<!-- INIZIO CAROSELLO DELLE IMMAGINI -->
+<div class="forabg forum-image-carousel" 
+     data-carousel-id="{{ carousel.CAROUSEL_ID }}" 
+     data-scroll-speed="{{ carousel.CAROUSEL_SCROLL_SPEED }}" 
+     data-scroll-direction="{{ carousel.CAROUSEL_SCROLL_DIRECTION }}"
+     data-label-posted-by="{{ lang('CAROUSEL_POSTED_BY') }}"
+     data-label-visited-by="{{ lang('CAROUSEL_VISITED_BY') }}"
+     data-label-posted-on="{{ lang('CAROUSEL_POSTED_ON') }}"
+     data-label-users="{{ lang('CAROUSEL_VISITED_USERS') }}"
+     data-label-user="{{ lang('CAROUSEL_VISITED_USER') }}"
+     role="region"
+     aria-label="{{ carousel.CAROUSEL_TITLE }}">
+    <div class="inner">
+        <div class="carousel-title">
+            <h3>{{ carousel.CAROUSEL_TITLE }}</h3>
+        </div>
+        <div class="carousel-container">
+            <div class="carousel-wrapper">
+                {% if carousel.carousel_images|length > 0 %}
+                    <button type="button" 
+                            class="carousel-prev" 
+                            aria-label="{{ lang('CAROUSEL_PREV') }}"
+                            title="{{ lang('CAROUSEL_PREV') }}">
+                        {{ lang('CAROUSEL_PREV') }}
+                    </button>
+                    <div class="carousel-items" role="list">
+                        {% for image in carousel.carousel_images %}
+                            <div class="carousel-item{% if image.S_FIRST_ROW %} active{% endif %}" 
+                                 role="listitem"
+                                 aria-hidden="{{ not image.S_FIRST_ROW }}">
+                                <a href="{{ image.URL }}" 
+                                   target="_blank" 
+                                   class="carousel-link"
+                                   rel="noopener noreferrer"
+                                   title="{{ image.TITLE }}"
+                                   data-author="{{ image.POSTER_NAME }}"
+                                   data-date="{{ image.TOPIC_DATE }}"
+                                   data-visits="{{ image.TOPIC_VIEWS }}">
+                                    {% if image.S_FIRST_ROW %}
+                                        <img src="{{ image.IMAGE }}" 
+                                             alt="{{ image.TITLE }}" 
+                                             class="carousel-image"
+                                             width="800"
+                                             height="400">
+                                    {% else %}
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" 
+                                             data-src="{{ image.IMAGE }}" 
+                                             alt="{{ image.TITLE }}" 
+                                             class="carousel-image lazy"
+                                             loading="lazy"
+                                             width="800"
+                                             height="400">
+                                    {% endif %}
+                                    <div class="carousel-caption">
+                                        <h4>{{ image.TITLE }}</h4>
+                                        <p>{{ lang('CAROUSEL_POSTED_BY') }} {{ image.USERNAME_FULL }}</p>
+                                        <p>{{ lang('CAROUSEL_POSTED_ON') }} {{ image.TOPIC_DATE }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" 
+                            class="carousel-next" 
+                            aria-label="{{ lang('CAROUSEL_NEXT') }}"
+                            title="{{ lang('CAROUSEL_NEXT') }}">
+                        {{ lang('CAROUSEL_NEXT') }}
+                    </button>
+                {% else %}
+                    <div class="carousel-empty" role="status">
+                        <p>{{ lang('CAROUSEL_EMPTY') }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FINE CAROSELLO DELLE IMMAGINI -->
+{% endfor %}
+{% endif %}

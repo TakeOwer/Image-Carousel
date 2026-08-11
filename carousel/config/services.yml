@@ -1,0 +1,31 @@
+services:
+    salvocortesiano.carousel.listener:
+        class: salvocortesiano\carousel\event\main_listener
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@template'
+            - '@user'
+            - '@auth'
+            - '@cache.driver'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
+        tags:
+            - { name: event.listener }
+        public: true
+    
+    salvocortesiano.carousel.controller:
+        class: salvocortesiano\carousel\controller\acp_controller
+        arguments:
+            - '@config'
+            - '@template'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '@log'
+            - '%core.table_prefix%'
+            - '@auth'
+        tags:
+            - { name: controller.service_arguments }
+        public: true

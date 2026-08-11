@@ -1,0 +1,103 @@
+{% include 'overall_header.html' %}
+
+<h1>{{ lang('ACP_CAROUSEL_TITLE') }}</h1>
+
+{% if not S_EDIT_MODE %}
+<div class="action-bar">
+    <div class="pagination">
+        <a href="{{ U_ADD_CAROUSEL }}" class="button">{{ lang('ACP_CAROUSEL_ADD') }}</a>
+    </div>
+</div>
+
+<table class="table1">
+    <thead>
+        <tr>
+            <th>{{ lang('ACP_CAROUSEL_NAME') }}</th>
+            <th>{{ lang('ACP_CAROUSEL_TITLE') }}</th>
+            <th>{{ lang('ACP_CAROUSEL_ENABLED') }}</th>
+            <th>{{ lang('ACTION') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for carousel in loops.carousels %}
+        <tr>
+            <td>{{ carousel.CAROUSEL_NAME }}</td>
+            <td>{{ carousel.CAROUSEL_TITLE }}</td>
+            <td>{{ carousel.CAROUSEL_ENABLED ? lang('YES') : lang('NO') }}</td>
+            <td>
+                <a href="{{ carousel.U_EDIT }}">{{ lang('EDIT') }}</a> &bull;
+                <a href="{{ carousel.U_DELETE }}" data-ajax="row_delete">{{ lang('DELETE') }}</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4" style="text-align: center;">{{ lang('ACP_CAROUSEL_NONE') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<form id="acp_carousel" method="post" action="{{ U_ACTION }}">
+    <fieldset>
+        <legend>{{ lang('ACP_CAROUSEL_SETTINGS') }}</legend>
+        <dl>
+            <dt><label for="carousel_name">{{ lang('ACP_CAROUSEL_NAME') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_CAROUSEL_NAME_EXPLAIN') }}</span></dt>
+            <dd><input type="text" id="carousel_name" name="carousel_name" value="{{ CAROUSEL_NAME }}" /></dd>
+        </dl>
+        
+        <dl>
+            <dt><label for="carousel_title">{{ lang('ACP_CAROUSEL_TITLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_CAROUSEL_TITLE_EXPLAIN') }}</span></dt>
+            <dd><input type="text" id="carousel_title" name="carousel_title" value="{{ CAROUSEL_TITLE }}" /></dd>
+        </dl>
+        
+        <dl>
+            <dt><label for="carousel_enabled">{{ lang('ACP_CAROUSEL_ENABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_CAROUSEL_ENABLE_EXPLAIN') }}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="carousel_enabled" name="carousel_enabled" value="1"{% if CAROUSEL_ENABLED %} checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+                <label><input type="radio" class="radio" name="carousel_enabled" value="0"{% if not CAROUSEL_ENABLED %} checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+            </dd>
+        </dl>
+        
+        <dl>
+            <dt><label for="carousel_forums">{{ lang('ACP_CAROUSEL_FORUMS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_CAROUSEL_FORUMS_EXPLAIN') }}</span></dt>
+            <dd>
+                <select id="carousel_forums" name="carousel_forums[]" multiple="multiple" size="10">
+                    {% for forum in loops.forums %}
+                    <option value="{{ forum.FORUM_ID }}"{% if forum.SELECTED %} selected="selected"{% endif %}>{{ forum.FORUM_NAME }}</option>
+                    {% endfor %}
+                </select>
+            </dd>
+        </dl>
+        
+        <dl>
+            <dt><label for="carousel_images_per_forum">{{ lang('ACP_CAROUSEL_IMAGES') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_CAROUSEL_IMAGES_EXPLAIN') }}</span></dt>
+            <dd>
+                <input type="number" id="carousel_images_per_forum" name="carousel_images_per_forum" value="{{ CAROUSEL_IMAGES_PER_FORUM }}" min="3" max="50" />
+            </dd>
+        </dl>
+        
+        <dl>
+            <dt><label for="carousel_scroll_speed">{{ lang('ACP_CAROUSEL_SPEED') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_CAROUSEL_SPEED_EXPLAIN') }}</span></dt>
+            <dd>
+                <input type="number" id="carousel_scroll_speed" name="carousel_scroll_speed" value="{{ CAROUSEL_SCROLL_SPEED }}" min="1000" max="80000" step="1000" />
+            </dd>
+        </dl>
+        
+        <dl>
+            <dt><label for="carousel_scroll_direction">{{ lang('ACP_CAROUSEL_DIRECTION') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ACP_CAROUSEL_DIRECTION_EXPLAIN') }}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="carousel_scroll_direction" name="carousel_scroll_direction" value="ltr"{% if CAROUSEL_SCROLL_DIRECTION == 'ltr' %} checked="checked"{% endif %} /> {{ lang('ACP_CAROUSEL_DIRECTION_LTR') }}</label>
+                <label><input type="radio" class="radio" name="carousel_scroll_direction" value="rtl"{% if CAROUSEL_SCROLL_DIRECTION == 'rtl' %} checked="checked"{% endif %} /> {{ lang('ACP_CAROUSEL_DIRECTION_RTL') }}</label>
+            </dd>
+        </dl>
+    </fieldset>
+
+    <fieldset class="submit-buttons">
+        <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+        <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+        {{ S_FORM_TOKEN }}
+    </fieldset>
+</form>
+{% endif %}
+
+{% include 'overall_footer.html' %}

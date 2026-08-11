@@ -1,0 +1,276 @@
+/**
+ * Forum Image Carousel Extension for phpBB.
+ * @package salvocortesiano/carousel
+ */
+
+/* Carousel container */
+.forum-image-carousel {
+    background-color: #fff !important;
+    border: 1px solid #e0e0e0 !important;
+    margin-bottom: 15px;
+    padding-bottom: 0;
+    border-radius: 0;
+    border-bottom: 4px solid #027fc9 !important;
+}
+
+.carousel-title {
+    padding: 5px 10px;
+    color: #027fc9 !important;
+    background-color: #fff !important;
+    text-transform: uppercase;
+}
+
+.carousel-title h3 {
+    font-size: 16px !important;
+    margin: 0;
+    font-weight: bold;
+}
+
+.carousel-container,
+.carousel-wrapper {
+    background-color: #fff !important;
+}
+
+/* Carosello responsive con scroll automatico e loop infinito */
+.carousel-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background: #fff;
+    height: 145px;
+    padding-top: 22px;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
+.carousel-items {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    animation: scroll-carousel 60s linear infinite;
+    will-change: transform;
+    width: max-content;
+    position: relative;
+    height: 100%;
+    padding-bottom: 6px;
+    box-sizing: border-box;
+}
+
+.forum-image-carousel:hover .carousel-items {
+    animation-play-state: paused;
+}
+
+.carousel-item {
+    flex: 0 0 auto;
+    width: 80px;
+    height: 110px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    overflow: visible;
+}
+
+.carousel-item img {
+    height: 100px;
+    width: auto;
+    max-width: 100%;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    transform-origin: center bottom;
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes scroll-carousel {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.carousel-item.active,
+.carousel-item.carousel-active {
+    z-index: 1;
+}
+
+/* Effetto bump: la copertina si ingrandisce e sovrappone le vicine */
+.carousel-item:hover,
+.carousel-item:focus-within,
+.carousel-item.active:hover,
+.carousel-item.active:focus-within {
+    z-index: 30;
+}
+
+.carousel-item:hover img,
+.carousel-item:focus-within img {
+    transform: scale(1.28);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.32);
+}
+
+.carousel-item a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    position: relative;
+}
+
+/* Lazy loading image styles */
+.carousel-item img.lazy {
+    opacity: 0;
+}
+
+.carousel-item img.lazy.loaded {
+    opacity: 1;
+}
+
+/* Rimuovo le didascalie */
+.carousel-caption {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* Poster info styles */
+.carousel-poster {
+    padding: 5px 0;
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.carousel-poster p {
+    margin: 2px 0;
+    font-style: italic;
+}
+
+/* Navigation buttons */
+.carousel-prev,
+.carousel-next {
+    display: none !important;
+}
+
+/* Empty carousel message */
+.carousel-empty {
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    font-style: italic;
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+    .carousel-wrapper {
+        height: 90px !important;
+        padding: 14px 0 0 !important;
+    }
+    .carousel-items {
+        gap: 4px !important;
+    }
+    .carousel-item {
+        width: 40px !important;
+        height: 60px !important;
+        margin: 0 2px !important;
+        padding: 0 !important;
+    }
+    .carousel-item img {
+        height: 50px !important;
+        max-width: 100% !important;
+    }
+    .carousel-item:hover img,
+    .carousel-item:focus-within img {
+        transform: scale(1.2);
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-wrapper {
+        height: 280px;
+        padding: 15px 60px;
+    }
+    
+    .carousel-item {
+        width: 200px;
+        height: 250px;
+    }
+    
+    .carousel-item img {
+        max-height: 140px;
+    }
+
+    .carousel-prev,
+    .carousel-next {
+        width: 50px;
+        height: 30px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-wrapper {
+        height: 240px;
+        padding: 10px 40px;
+    }
+    
+    .carousel-item {
+        width: 170px;
+        height: 220px;
+    }
+    
+    .carousel-item img {
+        max-height: 120px;
+    }
+    
+    .carousel-caption {
+        padding: 5px 0;
+        font-size: 12px;
+    }
+    
+    .carousel-prev,
+    .carousel-next {
+        width: 30px;
+        padding: 2px;
+    }
+}
+
+/* Tooltip scuro multilinea, centrato sull'immagine in hover */
+.carousel-tooltip {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: #222 !important;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.45;
+    white-space: pre-line;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    max-width: min(360px, calc(100vw - 16px));
+    min-width: 140px;
+    overflow: visible;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    text-align: center;
+    font-weight: 500;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.carousel-tooltip.active {
+    opacity: 1;
+}
+@media (max-width: 600px) {
+    .carousel-tooltip {
+        font-size: 12px;
+        max-width: min(260px, calc(100vw - 16px));
+        padding: 8px 10px;
+    }
+}
